@@ -104,7 +104,6 @@ Caculate(int gridamount,string pricetype)
         }
 
 
-
         lastprice=nowprice;
     }
 
