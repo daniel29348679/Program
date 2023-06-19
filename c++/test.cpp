@@ -1,11 +1,10 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-
-#define  cou( x ) ( #x )++ ;
 
 int main()
 {
-    int c=10;
-    cou(c)
-}
+    map<string, int> m;
 
+    m["123"] = 0;
+    cout << m["12"];
+}
