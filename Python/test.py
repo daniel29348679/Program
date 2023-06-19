@@ -1,7 +1,7 @@
 # %%
 import time
 
-N = 1000000
+N = 10000000
 
 
 def is_prime(n: int):
