@@ -19,29 +19,26 @@ def getinitialstate(x, y):
 
 
 # %%
-circ = QuantumCircuit(9)
-circ.cx(0, [3, 6])
-circ.barrier()
-circ.h([0, 3, 6])
-circ.cx(0, [1, 2])
-circ.cx(3, [4, 5])
-circ.cx(6, [7, 8])
-circ.barrier()
-# error here
-circ.z([1, 2, 3, 4, 5, 6, 7, 8])
-circ.barrier()
-circ.cx(0, [1, 2])
-circ.cx(3, [4, 5])
-circ.cx(6, [7, 8])
-circ.ccx(2, 1, 0)
-circ.ccx(5, 4, 3)
-circ.ccx(8, 7, 6)
+circ = QuantumCircuit(10, 2)
+# x => 3,5
+# z => 1,7
+circ.h([3, 5])
+circ.cx(3, [0, 4, 6])
+circ.cx(5, [2, 4, 8])
 
-circ.h([0, 3, 6])
-circ.cx(0, [3, 6])
-circ.ccx(6, 3, 0)
+circ.cx([0, 2, 4], 1)
+circ.cx([4, 6, 8], 7)
 
-circ.measure_all()
+circ.cx(4, 9)
+circ.x(4)
+
+circ.cx(3, [0, 4, 6])
+circ.cx(5, [2, 4, 8])
+
+circ.cx([0, 2, 4], 1)
+circ.cx([4, 6, 8], 7)
+
+circ.measure([4, 9], [0, 1])
 circ.draw("mpl")
 # %%
 circ = transpile(circ, simulator)
