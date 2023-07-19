@@ -14,7 +14,7 @@ simulator = Aer.get_backend("aer_simulator")
 code_h = 8
 code_w = 5
 morequbit = 1
-bit = 5
+bit = 4
 circ = QuantumCircuit(code_h * code_w + morequbit, bit)
 
 
@@ -80,10 +80,9 @@ def hole_z(x, y):
 init_state()
 hole_z(2, 5)
 stabilize()
-circ.x([lti(2, 0), lti(2, 2)])
-stabilize()
 
-circ.measure(lti(2, 3), 4)
+
+# circ.measure(lti(2, 3), 4)
 circ.measure([lti(1, 5), lti(3, 5), lti(2, 4), lti(2, 6)], [0, 1, 2, 3])
 
 # circ.draw("mpl")
