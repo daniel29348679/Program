@@ -18,27 +18,19 @@ def getinitialstate(x, y):
     ]
 
 
+def fulladder(circuit, in1, in2, in3, carry):
+    """in1, in2, in3 are the input qubits, carry is the output qubit,!!no sum"""
+    circuit.ccx(in1, in2, carry)
+    circuit.cx(in1, in2)
+    circuit.ccx(in2, in3, carry)
+    circuit.cx(in1, in2)
+
+
 # %%
-circ = QuantumCircuit(10, 2)
-# x => 3,5
-# z => 1,7
-circ.h([3, 5])
-circ.cx(3, [0, 4, 6])
-circ.cx(5, [2, 4, 8])
-
-circ.cx([0, 2, 4], 1)
-circ.cx([4, 6, 8], 7)
-
-circ.cx(4, 9)
-circ.x(4)
-
-circ.cx(3, [0, 4, 6])
-circ.cx(5, [2, 4, 8])
-
-circ.cx([0, 2, 4], 1)
-circ.cx([4, 6, 8], 7)
-
-circ.measure([4, 9], [0, 1])
+circ = QuantumCircuit(4)
+circ.x([0])
+fulladder(circ, 0, 1, 2, 3)
+circ.measure_all()
 circ.draw("mpl")
 # %%
 circ = transpile(circ, simulator)

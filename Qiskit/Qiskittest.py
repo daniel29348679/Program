@@ -11,31 +11,25 @@ from qiskit_ibm_provider import IBMProvider
 
 provider = IBMProvider()
 print(provider.backends())
-backend = provider.get_backend("ibmq_qasm_simulator")
+backend = provider.get_backend("ibm_lagos")
 
 
 # %%
-def getinitialstate(x, y):
-    return [
-        x / math.sqrt(abs(x) ** 2 + abs(y) ** 2),
-        y / math.sqrt(abs(x) ** 2 + abs(y) ** 2),
-    ]
+circ = QuantumCircuit(1, 1)
 
+for i in range(5):
+    circ.h(0)
+    circ.barrier()
+    circ.h(0)
+    circ.barrier()
 
+circ.measure(0, 0)
+# circ.draw("mpl")
 # %%
-total = 32
-circ = QuantumCircuit(total)
-circ.h(0)
-for i in range(1, total):
-    circ.cx(i - 1, i)
-circ.measure_all()
-circ.draw("mpl")
-
-# %%
-job = backend.run(circ)
+shots = 2000
+job = backend.run(circ, shots=shots)
 result = job.result()
 counts = result.get_counts(circ)
-# print(counts)
-for key in counts.keys():
-    print(f"'{key}' {counts[key]/4000}")
+
+print(counts)
 # %%
