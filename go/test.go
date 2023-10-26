@@ -1,45 +1,45 @@
 package main
 
 import (
-	"fmt"
-	"runtime"
+	"log"
 	"sync"
 )
 
+// 不能讓發布者或是訂閱者來關閉資料通道, 且不能讓發布者這邊來關閉額外的訊息通道來通知其他所有角色退出.
+// 引入主持人這角色在這情境下, 來關閉訊息通道
 func main() {
-	// 使用一個邏輯處理器給調度器用
-	runtime.GOMAXPROCS(2)
 
-	// wg + 2 表示要等待2個goroutine完成
-	var wg sync.WaitGroup
-	wg.Add(2)
+	wgSubscribers := sync.WaitGroup{}
+	wgSubscribers.Add(2)
 
-	fmt.Println("start goroutines")
+	dataCh := make(chan int, 200)
 
-	// 創建goroutine
 	go func() {
-		defer wg.Done()
-
-		for count := 0; count < 3; count++ {
-			for char := 'a'; char < 'a'+26; char++ {
-				fmt.Printf("%c", char)
+		defer wgSubscribers.Done()
+		for {
+			select {
+			case value := <-dataCh:
+				log.Println("form core1 ", value)
+				return
+			default:
 			}
 		}
 	}()
 
-	// 創建另一個goroutine
 	go func() {
-		defer wg.Done()
-
-		for count := 0; count < 3; count++ {
-			for char := 'A'; char < 'A'+26; char++ {
-				fmt.Printf("%c", char)
+		defer wgSubscribers.Done()
+		for {
+			select {
+			case value := <-dataCh:
+				log.Println("form core2 ", value)
+				return
+			default:
 			}
 		}
 	}()
 
-	fmt.Println("waiting to finish")
-	wg.Wait()
-
-	fmt.Println("\nfinish Program")
+	dataCh <- 100
+	dataCh <- 200
+	wgSubscribers.Wait()
+	log.Println(len(dataCh))
 }

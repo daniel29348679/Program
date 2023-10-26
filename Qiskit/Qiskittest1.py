@@ -27,9 +27,8 @@ def fulladder(circuit, in1, in2, in3, carry):
 
 
 # %%
-circ = QuantumCircuit(4)
-circ.x([0])
-fulladder(circ, 0, 1, 2, 3)
+circ = QuantumCircuit(1)
+circ.ry(0.6, 0)
 circ.measure_all()
 circ.draw("mpl")
 # %%

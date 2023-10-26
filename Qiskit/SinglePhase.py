@@ -17,9 +17,9 @@ def getinitialstate(x, y):
 
 
 # %%
-circ = QuantumCircuit(2)
-circ.ry(pi / 2, [0, 1])
-circ.z(0)
+circ = QuantumCircuit(1)
+circ.x(0)
+circ.ry(0.1, 0)
 circ.draw("mpl")
 # %%
 backend = Aer.get_backend("statevector_simulator")

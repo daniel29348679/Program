@@ -1,108 +1,81 @@
 #include <bits/stdc++.h>
+#define int	   long long
+#define fi	   first
+#define se	   second
+#define pii	   pair<int, int>
+#define all(x)    x.begin(), x.end()
+
 using namespace std;
+typedef long long ll;
 
-long long valvec[200001], rvalvec[200001], onevalvec[200001];
-
-inline int lowbit(const int &i)
+struct flight
 {
-    return i & (-i);
+	string n1;
+	string n2;
+	int	   time;
+	int	   fee;
 }
 
-int main()
+
+int getint()
 {
-    cin.tie(0);
-    ios::sync_with_stdio(0);
-    int m, n;
+	char c;
 
-    memset(valvec, 0x3f, sizeof(valvec));
-    memset(rvalvec, 0x3f, sizeof(rvalvec));
+	if(en)
+		return -999998;
 
-    cin >> m >> n;
-    for(long long i = 1 ; i <= m; i++)
-    {
-        long long j = i;
-        long long k;
-        cin >> k;
-        onevalvec[i] = k;
+	cin >> c;
+	if(c == ']')
+		return -999998;
 
-        while(j < 200001)
-        {
-            valvec[j] = min(valvec[j], abs(j - i) + k);
-            j        += lowbit(j);
-        }
-        j = 200001 - i;
-        while(j < 200001)
-        {
-            rvalvec[j] = min(rvalvec[j], abs(j - (200001 - i)) + k);
-            j         += lowbit(j);
-        }
-    }
-
-    for(long long i = 0 ; i < n; i++)
-    {
-        long long cas;
-        cin >> cas;
-        if(cas == 1)
-        {
-            long long k, x;
-            cin >> k >> x;
-            onevalvec[k] = x;
-            long long j = k;
+	if(c == '[')
+		cin >> c;
 
 
-            while(j < 200001)
-            {
-                long long nj = j - 1;
-                long long mi = onevalvec[j];
-                while(nj > 0 && lowbit(nj) < lowbit(j))
-                {
-                    mi  = min(mi, abs(j - nj) + valvec[nj]);
-                    nj -= lowbit(nj);
-                }
-                valvec[j] = mi;
+	if(c == 'n')
+	{
+		cin >> c >> c >> c >> c;
+		return -999999;
+	}
 
-                j += lowbit(j);
-            }
+	int total = c - '0';
+
+	while(cin >> c && (c <= '9' && '0' <= c))
+	{
+		total *= 10;
+		total += c - '0';
+	}
+	if(c == ']')
+		en = 1;
+	return total;
+}
+
+signed main()
+{
+	//ios::sync_with_stdio(0);
+	//cin.tie(0);
+
+	childvec.push_back({});
+	numvec.push_back(0);
+	int index = 0;
+	int now;   //= getint();
+	while(now = getint(), now != -999998)
+	{
+		if(now == -999999)
+		{
+			index++;
+			continue;
+		}
+		childvec.push_back({});
+		childvec[index].push_back(numvec.size());
+		numvec.push_back(now);
+	}
+
+	dfs(0);
 
 
-            j = 200001 - k;
+	//now = getint();
 
 
-            while(j < 200001)
-            {
-                long long nj = j - 1;
-                long long mi = onevalvec[200001 - j];
-                while(nj > 0 && lowbit(nj) < lowbit(j))
-                {
-                    mi  = min(mi, abs(j - nj) + rvalvec[nj]);
-                    nj -= lowbit(nj);
-                }
-                rvalvec[j] = mi;
-
-                j += lowbit(j);
-            }
-        }
-        else
-        {
-            long long tar;
-            cin >> tar;
-
-            long long j  = tar;
-            long long mi = 0x3f3f3f3f3f3f3f3f;
-            while(j > 0)
-            {
-                mi = min(mi, abs(tar - j) + valvec[j]);
-                j -= lowbit(j);
-            }
-            tar = 200001 - tar;
-            j   = tar;
-            while(j > 0)
-            {
-                mi = min(mi, abs(tar - j) + rvalvec[j]);
-                j -= lowbit(j);
-            }
-
-            cout << mi << "\n";
-        }
-    }
+	cout << ma;
 }
