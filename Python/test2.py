@@ -1,15 +1,19 @@
-#%%
-import numpy as np
+# %%
+import socket  # 导入 socket 模块
 
+# %%
+s = socket.socket()  # 创建 socket 对象
+host = socket.gethostname()  # 获取本地主机名
+port = 12345  # 设置端口号
 
-def swap(a, b):
-    z = a
-    a = b
-    b = z
+s.connect((host, port))
+while True:
+    mess = input() or "exit"
+    s.send(mess.encode("utf-8"))
+    if mess == "exit":
+        break
 
-
-a = {"name": 1}
-b = {"name": 2}
-swap(a, b)
-print(a, b)
+s.close()
+# %%
+print(host)
 # %%
